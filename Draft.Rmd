@@ -27,10 +27,14 @@ worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 
 The FIFA World Cup! One of the most exciting tournament in the world that occurs every four year (in my opinion). The World Cup is between national teams from all over the world. 
 
-The data that I will be using 
+The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football* in english. This dataset collects every World Cup match that was played in its history from Uruguay in 1930 to Russia in 2018. Using data from Kaggle that includes the top ranks of the tournament, stage of the tournament, home/away team, outcome of the match, and more.
+
+My approach to this data is to make analysis and insights of all the World Cup tournamnet matches. My goal is to see if I can uncover new information in the data that isn’t clear for viewers.
+
+# Attendance Rate
 
 ```{r}
-ggplot(worldcups, aes(x = year, y = attendance, fill = attendance)) +
+ggplot(worldcups, aes(x = year, y = attendance)) +
   geom_line()
 ```
 
