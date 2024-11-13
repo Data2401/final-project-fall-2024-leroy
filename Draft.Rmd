@@ -23,7 +23,7 @@ wcmatches <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-29/worldcups.csv')
 ```
 
-# Introduction
+# Introductio
 
 The FIFA World Cup! One of the most exciting tournament in the world that occurs every four year (in my opinion). The World Cup is between national teams from all over the world. 
 
@@ -33,9 +33,17 @@ My approach to this data is to make analysis and insights of all the World Cup t
 
 # Attendance Rate
 
+How popular is the FIFA World Cup? How many attended? Which year had the highest amount of audience?
+Highest rank: `r worldcups %>% slice_max(n = 3, order_by = year)`
+
 ```{r}
-ggplot(worldcups, aes(x = year, y = attendance)) +
-  geom_line()
+worldcups %>% 
+  slice_max(n = 3, order_by = attendance)
+
+ggplot(worldcups, aes(x = year, y = attendance, fill = host)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Attendance Rate",
+       subtitle = "1930 - 2018")
 ```
 
 
