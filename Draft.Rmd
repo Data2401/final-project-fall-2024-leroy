@@ -8,10 +8,11 @@ output:
   beamer_presentation:
     highlight: default
 ---
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message = F}
 knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
+library(plotly)
 library(ggplot2)
 
 #Packages Required
@@ -22,28 +23,126 @@ tuesdata <- tidytuesdayR::tt_load(2022, week = 48)
 wcmatches <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-29/wcmatches.csv')
 worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-29/worldcups.csv')
 ```
+# Introduction
 
-# Introductio
 
 The FIFA World Cup! One of the most exciting tournament in the world that occurs every four year (in my opinion). The World Cup is between national teams from all over the world. 
 
-The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football* in english. This dataset collects every World Cup match that was played in its history from Uruguay in 1930 to Russia in 2018. Using data from Kaggle that includes the top ranks of the tournament, stage of the tournament, home/away team, outcome of the match, and more.
-
+The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football* in english. This dataset collects data from `r nrow(wcmatches)`  World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. Using data from Kaggle that includes the top ranks of the tournament, stage of the tournament, home/away team, outcome of the match, and more.
 My approach to this data is to make analysis and insights of all the World Cup tournamnet matches. My goal is to see if I can uncover new information in the data that isn’t clear for viewers.
+
+
+# When was the First Match?
+```{r}
+wcmatches %>% 
+  select(year, stage, date, home_team, away_team, outcome) %>% 
+  filter(date == min(date))
+
+```
+# When was the most recent match?
+```{r}
+wcmatches %>% 
+  select(year, stage, date, home_team, away_team, outcome) %>% 
+  filter(date == max(date))
+```
 
 # Attendance Rate
 
 How popular is the FIFA World Cup? How many attended? Which year had the highest amount of audience?
-Highest rank: `r worldcups %>% slice_max(n = 3, order_by = year)`
+
+
+```{r echo = F}
+top3 <- worldcups %>% 
+  select(year, host, attendance, games, winner) %>% 
+  slice_max(n = 3, order_by = attendance)
+knitr::kable(top3)
+
+```
 
 ```{r}
-worldcups %>% 
-  slice_max(n = 3, order_by = attendance)
-
 ggplot(worldcups, aes(x = year, y = attendance, fill = host)) +
   geom_bar(stat = "identity") +
   labs(title = "Attendance Rate",
        subtitle = "1930 - 2018")
+
+```
+
+# Ranking from Top to least
+
+```{r}
+q <- worldcups %>% 
+  ggplot() +
+  aes(x = reorder(year, attendance),
+      y = attendance,
+      fill = host) +
+  geom_col() +
+  coord_flip()
+
+ggplotly(q)
 ```
 
 
+
+
+# FIFA World Cup Winner
+Each tournament is exciting, not knowing which National Team will take the title. I wouldn't know which team has taken the most titles. Lets have a look.
+
+```{r}
+W <- worldcups %>% 
+  ggplot() +
+  aes(x = winner,
+      fill = winner) +
+  geom_bar()
+ggplotly(W)
+
+```
+
+# Most Goals
+Every match is exciting, especially when your team scores. Every one standing up screaming Gol, bumping to each other and even spealing our drinks to our neighbor. How many gols screams are there per game?
+
+```{r}
+wcmatches <- wcmatches %>% 
+  mutate(Total_Gols = home_score + away_score) %>% 
+  select(year, stage, home_team, away_team, home_score, away_score, Total_Gols, everything())
+wcmatches
+
+```
+# How many Gols per year held?
+```{r}
+v <- wcmatches %>% 
+  group_by(year) %>% 
+  summarise(Total_Gols = sum(Total_Gols)) %>% 
+  ggplot(aes(x = year, y = Total_Gols)) +
+  geom_bar(fill = "Red", stat = "identity") +
+  labs(title = "Total Goals per Tournament")
+ggplotly(v)
+
+```
+ 
+ 
+# Matches during the week
+
+```{r}
+Days <- wcmatches %>% 
+  ggplot(aes(x = dayofweek, fill = dayofweek)) +
+  facet_wrap(~ year) +
+  coord_flip() +
+  geom_bar()
+ggplotly(Days)
+
+```
+
+# Which teams have made it to the SemiFinal?
+
+```{r}
+wcmatches %>% 
+  filter(stage == "Semifinals") %>% 
+  select(year, stage, home_team, away_team, outcome)
+```
+
+# Which 
+```{r}
+
+
+```
+ 
