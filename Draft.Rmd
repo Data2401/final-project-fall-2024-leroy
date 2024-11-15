@@ -37,7 +37,6 @@ My approach to this data is to make analysis and insights of all the World Cup t
 wcmatches %>% 
   select(year, stage, date, home_team, away_team, outcome) %>% 
   filter(date == min(date))
-
 ```
 # When was the most recent match?
 ```{r}
@@ -49,7 +48,6 @@ wcmatches %>%
 # Attendance Rate
 
 How popular is the FIFA World Cup? How many attended? Which year had the highest amount of audience?
-
 
 ```{r echo = F}
 top3 <- worldcups %>% 
@@ -79,6 +77,7 @@ q <- worldcups %>%
   coord_flip()
 
 ggplotly(q)
+
 ```
 
 
@@ -119,6 +118,18 @@ ggplotly(v)
 
 ```
  
+# Which Team has scored more goals?
+
+```{r}
+wcmatches %>%
+  group_by(home_team) %>% 
+  summarise(home_score = sum(home_score)) %>% 
+  arrange(desc(home_score))
+
+#Missing the Away Gols
+```
+
+ 
  
 # Matches during the week
 
@@ -141,6 +152,7 @@ wcmatches %>%
 ```
 
 # Which 
+
 ```{r}
 
 
