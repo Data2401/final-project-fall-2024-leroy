@@ -29,20 +29,21 @@ worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 The FIFA World Cup! One of the most exciting tournament in the world that occurs every four year (in my opinion). The World Cup is between national teams from all over the world. 
 
 The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football* in english. This dataset collects data from `r nrow(wcmatches)`  World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. Using data from Kaggle that includes the top ranks of the tournament, stage of the tournament, home/away team, outcome of the match, and more.
+
 My approach to this data is to make analysis and insights of all the World Cup tournamnet matches. My goal is to see if I can uncover new information in the data that isn’t clear for viewers.
 
 
-# When was the First Match?
+# When was the First Match from the data?
 ```{r}
 wcmatches %>% 
   select(year, stage, date, home_team, away_team, outcome) %>% 
-  filter(date == min(date))
+  filter(date == min(date)) %>% knitr::kable()
 ```
-# When was the most recent match?
+# When was the most recent match from the data?
 ```{r}
 wcmatches %>% 
   select(year, stage, date, home_team, away_team, outcome) %>% 
-  filter(date == max(date))
+  filter(date == max(date)) %>% knitr::kable()
 ```
 
 # Attendance Rate
@@ -58,11 +59,12 @@ knitr::kable(top3)
 ```
 
 ```{r}
-ggplot(worldcups, aes(x = year, y = attendance, fill = host)) +
+attend_graph <- ggplot(worldcups, aes(x = year, y = attendance, fill = host,  text = paste("Host: ", host))) +
   geom_bar(stat = "identity") +
   labs(title = "Attendance Rate",
        subtitle = "1930 - 2018")
 
+ggplotly(attend_graph)
 ```
 
 # Ranking from Top to least
@@ -74,26 +76,44 @@ q <- worldcups %>%
       y = attendance,
       fill = host) +
   geom_col() +
-  coord_flip()
+  coord_flip() +
+  labs(title = "Highest to lowest",
+       y = "Amount of Audience",
+       x = "Year")
 
 ggplotly(q)
 
 ```
 
+# Has USA won the FIFA World Cup?
+
+```{r}
+worldcups %>% 
+  filter(winner  == "USA")
+
+```
 
 
 
-# FIFA World Cup Winner
-Each tournament is exciting, not knowing which National Team will take the title. I wouldn't know which team has taken the most titles. Lets have a look.
+# Who was won the FIFA World Cup?
+
+```{r}
+worldcups %>% 
+  distinct(winner) %>% knitr::kable()
+```
+
+
+# FIFA World Cup Winners count
 
 ```{r}
 W <- worldcups %>% 
   ggplot() +
   aes(x = winner,
       fill = winner) +
-  geom_bar()
-ggplotly(W)
+  geom_bar() +
+  labs(title = "Championship Winner")
 
+ggplotly(W)
 ```
 
 # Most Goals
@@ -106,6 +126,17 @@ wcmatches <- wcmatches %>%
 wcmatches
 
 ```
+
+# Ranked Most to Least amount of gols in a match.
+
+```{r}
+wcmatches %>% 
+  group_by(date, winning_team) %>% 
+  arrange(-Total_Gols)
+
+```
+
+
 # How many Gols per year held?
 ```{r}
 v <- wcmatches %>% 
@@ -123,14 +154,58 @@ ggplotly(v)
 ```{r}
 wcmatches %>%
   group_by(home_team) %>% 
-  summarise(home_score = sum(home_score)) %>% 
-  arrange(desc(home_score))
+  summarise(home_score = sum(home_score), n_home = n()) -> set1
 
-#Missing the Away Gols
+wcmatches %>% 
+  group_by(away_team) %>%
+  summarise(away_score = sum(away_score), n_away = n()) -> set2
+
+inner_join(set1, set2, join_by("home_team" == "away_team")) %>% 
+  mutate(total_goals = home_score + away_score) %>%
+  select(team = home_team, total_goals) %>%
+  arrange(-total_goals)
+
 ```
 
- 
- 
+# Three different Germany Teams?
+
+```{r}
+inner_join(set1, set2, join_by("home_team" == "away_team")) %>% 
+  mutate(total_goals = home_score + away_score) %>%
+  select(team = home_team, total_goals) %>%
+  
+  arrange(-total_goals)
+
+```
+
+# Has any matches end in extra time or penalties?
+```{r}
+wcmatches %>%
+  na.omit() %>% 
+  select(year, home_team, away_team, win_conditions)
+```
+# How many matches played After Extra Time?
+```{r}
+wcmatches %>% 
+  filter(grepl("AET", win_conditions)) %>% 
+  select(year, stage, win_conditions) %>% 
+  arrange(year)
+```
+# How many matches made it to the Penalties stage?
+```{r}
+wcmatches %>% 
+  filter(grepl("penalties", win_conditions)) %>% 
+  select(year, stage, win_conditions) %>% 
+  arrange(year)
+
+```
+# AET
+
+```{r}
+
+
+```
+
 # Matches during the week
 
 ```{r}
