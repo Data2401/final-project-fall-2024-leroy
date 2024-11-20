@@ -25,9 +25,8 @@ worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 ```
 # Introduction
 
-The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football* in english. This dataset collects data from `r nrow(wcmatches)`  World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. Using data from Kaggle that includes the top ranks of the tournament, stage of the tournament, home/away team, outcome of the match, and more.
-
-
+The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*.  This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
+This data collected from [Kaggle](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-11-29).
 
 # When was the First Match from the data?
 ```{r}
@@ -142,7 +141,7 @@ v <- wcmatches %>%
   group_by(year) %>% 
   summarise(Total_Gols = sum(Total_Gols)) %>% 
   ggplot(aes(x = year, y = Total_Gols)) +
-  geom_bar(colour = "red", fill = "white", stat = "identity", size = 5) +
+  geom_bar(colour = "red", fill = "white", stat = "identity", linewidth = 5) +
   geom_text(aes(label = Total_Gols), vjust = 0) +
   labs(title = "Total Goals for every Quadrennial Tournament",
        x = "Year", 
@@ -221,18 +220,18 @@ ggplotly(Overall)
 # Matches during the week
 
 ```{r}
-Days <- wcmatches %>% 
-  mutate(weekdays = dayofweek(dates, label = TRUE)) %>% 
-  ggplot(aes(x = weekdays, fill = dayofweek)) +
-  geom_bar() +
-  facet_wrap(~ year) +
-  coord_flip() +
-  labs(title = "Match Day Per Quadrennial Tournament",
-       subtitle = "Which Day had the most matches?",
-       y = "Year",
-       x = "Weekday")
+#Days <- wcmatches %>% 
+ # mutate(weekdays = dayofweek(dates, label = TRUE)) %>% 
+ # ggplot(aes(x = weekdays, fill = dayofweek)) +
+  #geom_bar() +
+#  facet_wrap(~ year) +
+ # coord_flip() +
+  #labs(title = "Match Day Per Quadrennial Tournament",
+   #    subtitle = "Which Day had the most matches?",
+    #   y = "Year",
+     #  x = "Weekday")
 
-ggplotly(Days)
+#ggplotly(Days)
 
 ```
 
