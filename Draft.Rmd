@@ -89,7 +89,7 @@ ggplotly(q)
 
 ```{r}
 worldcups %>% 
-  filter(winner  == "USA")
+  filter(winner  == "USA") %>% knitr::kable()
 
 ```
 
@@ -123,7 +123,9 @@ Every match is exciting, especially when your team scores. Every one standing up
 wcmatches <- wcmatches %>% 
   mutate(Total_Gols = home_score + away_score) %>% 
   select(year, stage, home_team, away_team, home_score, away_score, Total_Gols, everything())
-wcmatches
+
+wcmatches %>%
+  select(year, stage, winning_team, Total_Gols)
 
 ```
 
@@ -132,12 +134,12 @@ wcmatches
 ```{r}
 wcmatches %>% 
   group_by(date, winning_team) %>% 
-  arrange(-Total_Gols)
-
+  select(date, home_team, away_team, winning_team, Total_Gols) %>% 
+  arrange(-Total_Gols) %>% knitr::kable() 
 ```
 
 
-# How many Gols per year held?
+# How many Gols per year occur?
 ```{r}
 v <- wcmatches %>% 
   group_by(year) %>% 
@@ -163,7 +165,8 @@ wcmatches %>%
 inner_join(set1, set2, join_by("home_team" == "away_team")) %>% 
   mutate(total_goals = home_score + away_score) %>%
   select(team = home_team, total_goals) %>%
-  arrange(-total_goals)
+  head(10) %>% 
+  arrange(-total_goals) %>% knitr::kable()
 
 ```
 
@@ -173,6 +176,7 @@ inner_join(set1, set2, join_by("home_team" == "away_team")) %>%
 inner_join(set1, set2, join_by("home_team" == "away_team")) %>% 
   mutate(total_goals = home_score + away_score) %>%
   select(team = home_team, total_goals) %>%
+  mutate(team = recode(team, 'West Germany' = 'Germany', 'East Germany' = 'Germany', 'Germany' = 'Germany')) %>% 
   
   arrange(-total_goals)
 
@@ -182,28 +186,43 @@ inner_join(set1, set2, join_by("home_team" == "away_team")) %>%
 ```{r}
 wcmatches %>%
   na.omit() %>% 
-  select(year, home_team, away_team, win_conditions)
+  select(year, home_team, away_team, win_conditions) %>% knitr::kable()
+
 ```
 # How many matches played After Extra Time?
 ```{r}
-wcmatches %>% 
+AET <- wcmatches %>% 
   filter(grepl("AET", win_conditions)) %>% 
   select(year, stage, win_conditions) %>% 
-  arrange(year)
+  arrange(year) %>% knitr::kable()
+AET
 ```
+
 # How many matches made it to the Penalties stage?
 ```{r}
-wcmatches %>% 
+penalties <- wcmatches %>% 
   filter(grepl("penalties", win_conditions)) %>% 
   select(year, stage, win_conditions) %>% 
   arrange(year)
+penalties %>% knitr::kable()
 
 ```
-# AET
+
+# All Together
 
 ```{r}
+wcmatches <- wcmatches %>% 
+  mutate(Type_of_Win = str_extract(win_conditions, "\\b(AET|penalties)\\b"))
 
+Overall <- wcmatches %>% 
+  na.omit() %>% 
+  ggplot(aes(x = Type_of_Win, fill = Type_of_Win)) +
+  geom_bar() +
+  labs(title = "After Extra Time & penalties",
+       x = " ", 
+       y = " ")
 
+ggplotly(Overall)
 ```
 
 # Matches during the week
@@ -223,13 +242,7 @@ ggplotly(Days)
 ```{r}
 wcmatches %>% 
   filter(stage == "Semifinals") %>% 
-  select(year, stage, home_team, away_team, outcome)
+  select(year, stage, home_team, away_team, outcome) %>% knitr::kable()
 ```
 
-# Which 
-
-```{r}
-
-
-```
  
