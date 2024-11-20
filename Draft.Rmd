@@ -23,6 +23,7 @@ tuesdata <- tidytuesdayR::tt_load(2022, week = 48)
 wcmatches <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-29/wcmatches.csv')
 worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-29/worldcups.csv')
 ```
+
 # Introduction
 
 The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*.  This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
@@ -149,8 +150,6 @@ v <- wcmatches %>%
 ggplotly(v)
 
 ```
-# Which Year had the same amount of Goals scored?
- 
  
 # Which Team has scored more goals?
 
