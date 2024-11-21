@@ -27,7 +27,7 @@ worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 # Introduction
 
 The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*.  This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
-This data collected from [Kaggle](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-11-29).
+This data collected from [Kaggle](https://www.kaggle.com/datasets/evangower/fifa-world-cup).
 
 # Which Countries have hosted the FIFA World Cup?
 ```{r}
@@ -115,14 +115,16 @@ worldcups %>%
 # FIFA World Cup Winners count
 
 ```{r}
-Wins <- worldcups %>% 
+library(forcats)
+Wins <- worldcups %>%
   ggplot() +
-  aes(x = winner, 
+  aes(x = fct_infreq(winner),
       fill = winner) +
   geom_bar() +
   labs(title = "Championship Winners!",
        x = "Winners!")
 ggplotly(Wins)
+
 ```
 
 
@@ -134,9 +136,7 @@ wcmatches <- wcmatches %>%
   mutate(Total_Gols = home_score + away_score) %>% 
   select(year, home_team, away_team, home_score, away_score, Total_Gols, everything())
 
-wcmatches %>%
-  select(year, stage, winning_team, away_team, Total_Gols) %>% 
-  knitr::kable()
+wcmatches %>% knitr::kable()
 
 ```
 
@@ -144,10 +144,9 @@ wcmatches %>%
 
 ```{r}
 wcmatches %>% 
-  group_by(date, winning_team) %>% 
-  select(date, home_team, away_team, winning_team, Total_Gols) %>% 
-  head(20) %>% 
-  arrange(-Total_Gols) %>% knitr::kable() 
+  arrange(-Total_Gols) %>% 
+    head(10) %>% knitr::kable() 
+
 ```
 
 
@@ -157,7 +156,7 @@ v <- wcmatches %>%
   group_by(year) %>% 
   summarise(Total_Gols = sum(Total_Gols)) %>% 
   ggplot(aes(x = year, y = Total_Gols)) +
-  geom_bar(colour = "red", fill = "white", stat = "identity", linewidth = 5) +
+  geom_bar(colour = "green", fill = "white", stat = "identity", linewidth = 5) +
   geom_text(aes(label = Total_Gols), vjust = 0) +
   labs(title = "Total Goals for every Quadrennial Tournament",
        x = "Year", 
@@ -233,7 +232,12 @@ ggplotly(Overall)
 # Matches during the week
 
 ```{r}
-Days <- wcmatches %>% 
+Days <- wcmatches %>%
+  mutate(dayofweek = factor(dayofweek,
+                            levels = c("Sunday","Monday","Tuesday",
+                                       "Wednesday","Thursday","Friday",
+                                       "Saturday"),
+                            ordered = T)) %>%
   ggplot(aes(x = dayofweek, fill = dayofweek)) +
   geom_bar() +
   facet_wrap(~ year) +
@@ -249,4 +253,8 @@ ggplotly(Days)
 
 # Summary
 
+I was eager in learning what type of data was stored under the data frame. Having to displays the given information with graphs demonstrates a better understanding of Tournament.
 
+Fans, Reporters, and Journalist try to predict who will take the title but their are so much data missing to consider the winning Nation. Who are the players? Is the weather under the same condition per Quadrennial? Who are the referees? And more..
+
+Every Tournament is inpredictable. Is just what makes it exciting.
