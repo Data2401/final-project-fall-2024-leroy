@@ -29,6 +29,14 @@ worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*.  This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
 This data collected from [Kaggle](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-11-29).
 
+# Which Countries have hosted the FIFA World Cup?
+```{r}
+worldcups %>% 
+  distinct(host) %>% knitr::kable()
+```
+
+
+
 # When was the First Match from the data?
 ```{r}
 wcmatches %>% 
@@ -90,11 +98,19 @@ filter(worldcups, winner == "USA" | second == "USA" | third == "USA" | fourth ==
 
 
 
-# Who was won the FIFA World Cup?
+# What Country has won the FIFA World Cup?
 
 ```{r}
 worldcups %>% 
   distinct(winner) %>% knitr::kable()
+
+```
+
+# Which Nations have made it to Second Place?
+```{r}
+worldcups %>%
+  distinct(second) %>% knitr::kable()
+
 ```
 
 
@@ -117,7 +133,7 @@ Every match is exciting, especially when your team scores. Every one standing up
 ```{r}
 wcmatches <- wcmatches %>% 
   mutate(Total_Gols = home_score + away_score) %>% 
-  select(year, stage, home_team, away_team, home_score, away_score, Total_Gols, everything())
+  select(year, home_team, away_team, home_score, away_score, Total_Gols, everything())
 
 wcmatches %>%
   select(year, stage, winning_team, away_team, Total_Gols) %>% 
@@ -136,7 +152,7 @@ wcmatches %>%
 ```
 
 
-# How many Gols per year occur?
+# How many Gols per Quadrennial occur?
 ```{r}
 v <- wcmatches %>% 
   group_by(year) %>% 
@@ -210,8 +226,8 @@ Overall <- wcmatches %>%
   ggplot(aes(x = Type_of_Win, fill = Type_of_Win)) +
   geom_bar() +
   labs(title = "After Extra Time & penalties",
-       x = " ", 
-       y = " ")
+       x = "Type of Win", 
+       y = "Total ")
 
 ggplotly(Overall)
 ```
