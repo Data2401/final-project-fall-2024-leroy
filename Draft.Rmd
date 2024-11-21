@@ -26,8 +26,12 @@ worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 
 # Introduction
 
+FIFA!
+
 The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*.  This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
 This data collected from [Kaggle](https://www.kaggle.com/datasets/evangower/fifa-world-cup).
+
+What's in the data? Fun Facts? Can the next FIFA World Cup winner be predicted? 
 
 # Which Countries have hosted the FIFA World Cup?
 ```{r}
@@ -128,7 +132,7 @@ ggplotly(Wins)
 ```
 
 
-# Most Goals
+# Total Goals
 Every match is exciting, especially when your team scores. Every one standing up screaming Gol, bumping to each other and even spealing our drinks to our neighbor. How many gols screams are there per game?
 
 ```{r}
@@ -140,7 +144,7 @@ wcmatches %>% knitr::kable()
 
 ```
 
-# Ranked Most to Least amount of gols in a match.
+# Ranked Most to Least amount of Total Gols in a match.
 
 ```{r}
 wcmatches %>% 
