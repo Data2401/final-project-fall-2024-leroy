@@ -40,13 +40,13 @@ worldcups %>%
 # When was the First Match from the data?
 ```{r}
 wcmatches %>% 
-  select(year, stage, date, home_team, away_team, outcome) %>% 
+  select(stage, date, home_team, away_team,home_score, away_score, outcome) %>% 
   filter(date == min(date)) %>% knitr::kable()
 ```
 # When was the most recent match from the data?
 ```{r}
 wcmatches %>% 
-  select(year, stage, date, home_team, away_team, outcome) %>% 
+  select(stage, date, home_team, away_team,home_score, away_score, outcome) %>% 
   filter(date == max(date)) %>% knitr::kable()
 ```
 
@@ -96,13 +96,11 @@ filter(worldcups, winner == "USA" | second == "USA" | third == "USA" | fourth ==
 
 ```
 
-
-
-# What Country has won the FIFA World Cup?
+# What Nations have won the FIFA World Cup?
 
 ```{r}
 worldcups %>% 
-  distinct(winner) %>% knitr::kable()
+  distinct(winner, year) %>% knitr::kable()
 
 ```
 
@@ -122,7 +120,8 @@ Wins <- worldcups %>%
   aes(x = winner, 
       fill = winner) +
   geom_bar() +
-  labs(title = "Championship Winners!")
+  labs(title = "Championship Winners!",
+       x = "Winners!")
 ggplotly(Wins)
 ```
 
@@ -167,7 +166,7 @@ ggplotly(v)
 
 ```
  
-# Which Team has scored more goals?
+# Which Team has scored the most goals?
 
 ```{r}
 wcmatches %>%
@@ -181,7 +180,6 @@ wcmatches %>%
 inner_join(set1, set2, join_by("home_team" == "away_team")) %>% 
   mutate(total_goals = home_score + away_score) %>%
   select(team = home_team, total_goals) %>%
-  head(10) %>% 
   arrange(-total_goals) %>% knitr::kable()
 
 ```
@@ -235,27 +233,20 @@ ggplotly(Overall)
 # Matches during the week
 
 ```{r}
-#Days <- wcmatches %>% 
- # mutate(weekdays = dayofweek(dates, label = TRUE)) %>% 
- # ggplot(aes(x = weekdays, fill = dayofweek)) +
-  #geom_bar() +
-#  facet_wrap(~ year) +
- # coord_flip() +
-  #labs(title = "Match Day Per Quadrennial Tournament",
-   #    subtitle = "Which Day had the most matches?",
-    #   y = "Year",
-     #  x = "Weekday")
+Days <- wcmatches %>% 
+  ggplot(aes(x = dayofweek, fill = dayofweek)) +
+  geom_bar() +
+  facet_wrap(~ year) +
+  coord_flip() +
+  labs(title = "Match Day Per Quadrennial Tournament",
+       subtitle = "Which Day had the most matches?",
+       y = "Count of Days",
+       x = "Weekday")
 
-#ggplotly(Days)
+ggplotly(Days)
 
 ```
 
-# Which teams have made it to the SemiFinal?
+# Summary
 
-```{r}
-wcmatches %>% 
-  filter(stage == "Semifinals") %>% 
-  select(year, stage, home_team, away_team) %>% knitr::kable()
-```
 
- 
