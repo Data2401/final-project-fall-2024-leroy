@@ -28,8 +28,8 @@ worldcups <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 
 FIFA!
 
-The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*.  This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
-This data collected from [Kaggle](https://www.kaggle.com/datasets/evangower/fifa-world-cup).
+The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*. This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
+This data collected from [GitHub](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-11-29).
 
 What's in the data? Fun Facts? Can the next FIFA World Cup winner be predicted? 
 
