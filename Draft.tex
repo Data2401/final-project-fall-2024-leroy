@@ -1,0 +1,187 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\newif\ifbibliography
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Final Project},
+  pdfauthor={Leroy Ozores},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Final Project}
+\author{Leroy Ozores}
+\date{}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Introduction The FIFA World Cup! One of the most exciting
+tournament in the world that occurs every four year (in my opinion). The
+World Cup is between national teams from all over the world.}
+\phantomsection\label{introduction-the-fifa-world-cup-one-of-the-most-exciting-tournament-in-the-world-that-occurs-every-four-year-in-my-opinion.-the-world-cup-is-between-national-teams-from-all-over-the-world.}
+The data that I will be using comes from FIFA, ``Fédération
+Internationale de Football Association'', which translates to,
+\emph{International Federation of Association Football} in english. This
+dataset collects every World Cup match that was played in its history
+from Uruguay in 1930 to Russia in 2018. Using data from Kaggle that
+includes the top ranks of the tournament, stage of the tournament,
+home/away team, outcome of the match, and more. My approach to this data
+is to make analysis and insights of all the World Cup tournamnet
+matches. My goal is to see if I can uncover new information in the data
+that isn't clear for viewers.
+\end{frame}
+
+\begin{frame}{Attendance Rate}
+\phantomsection\label{attendance-rate}
+How popular is the FIFA World Cup? How many attended? Which year had the
+highest amount of audience? - Highest rank: c(2018, 2014, 2010),
+c(``Russia'', ``Brazil'', ``South Africa''), c(``France'', ``Germany'',
+``Spain''), c(``Croatia'', ``Argentina'', ``Netherlands''),
+c(``Belgium'', ``Netherlands'', ``Germany''), c(``England'', ``Brazil'',
+``Uruguay''), c(169, 171, 145), c(32, 32, 32), c(64, 64, 64), c(3031768,
+3441450, 2167984) - Second - Third
+
+\includegraphics{Draft_files/figure-beamer/unnamed-chunk-1-1.pdf}
+\end{frame}
+
+\begin{frame}[fragile]{FIFA World Cup Winner}
+\phantomsection\label{fifa-world-cup-winner}
+Each tournament is exciting, not knowing which National Team will take
+the title. I wouldn't know which team has taken the most titles. Lets
+have a look.
+
+\begin{verbatim}
+## # A tibble: 9 x 2
+##   winner       Count
+##   <chr>        <int>
+## 1 Argentina        2
+## 2 Brazil           5
+## 3 England          1
+## 4 France           2
+## 5 Germany          1
+## 6 Italy            4
+## 7 Spain            1
+## 8 Uruguay          2
+## 9 West Germany     3
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Most Goals}
+\phantomsection\label{most-goals}
+Every match is exciting, especially when your team scores. Every one
+standing up screaming Gol, bumping to each other and even spealing our
+drinks to our neighbor. But which teams has gotten the most screams?
+
+\includegraphics{Draft_files/figure-beamer/unnamed-chunk-3-1.pdf}
+
+\begin{verbatim}
+## Warning in geom_col(stat = "identity"): Ignoring unknown parameters: `stat`
+\end{verbatim}
+
+\includegraphics{Draft_files/figure-beamer/unnamed-chunk-3-2.pdf}
+\end{frame}
+
+\begin{frame}{National Team Attendance}
+\phantomsection\label{national-team-attendance}
+How many Teams enter the Tournament? Is it always the same Teams?
+\includegraphics{Draft_files/figure-beamer/unnamed-chunk-4-1.pdf}
+\end{frame}
+
+\end{document}
