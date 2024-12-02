@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(plotly)
 library(ggplot2)
+library(kableExtra)
 
 #Packages Required
 
@@ -33,10 +34,14 @@ This data collected from [GitHub](https://github.com/rfordatascience/tidytuesday
 
 What's in the data? Fun Facts? Can the next FIFA World Cup winner be predicted? 
 
+
 # Which Countries have hosted the FIFA World Cup?
 ```{r}
 worldcups %>% 
-  distinct(host) %>% knitr::kable()
+  distinct(host) %>% 
+  kbl() %>% 
+  kable_minimal()
+
 ```
 
 
@@ -45,7 +50,9 @@ worldcups %>%
 ```{r}
 wcmatches %>% 
   select(stage, date, home_team, away_team,home_score, away_score, outcome) %>% 
-  filter(date == min(date)) %>% knitr::kable()
+  filter(date == min(date)) %>% 
+  kbl() %>% 
+  kable_classic()
 ```
 # When was the most recent match from the data?
 ```{r}
@@ -104,14 +111,18 @@ filter(worldcups, winner == "USA" | second == "USA" | third == "USA" | fourth ==
 
 ```{r}
 worldcups %>% 
-  distinct(winner, year) %>% knitr::kable()
+  distinct(winner, year) %>%
+  kbl() %>% 
+  kable_classic()
 
 ```
 
 # Which Nations have made it to Second Place?
 ```{r}
 worldcups %>%
-  distinct(second) %>% knitr::kable()
+  distinct(second) %>%
+  kbl() %>% 
+  kable_classic()
 
 ```
 
