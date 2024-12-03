@@ -4,9 +4,10 @@ author: "Leroy Ozores"
 output:
   slidy_presentation:
     highlight: default
-  powerpoint_presentation: default
   beamer_presentation:
     highlight: default
+  powerpoint_presentation: default
+  pdf_document: default
 ---
 ```{r setup, include=FALSE, message = F}
 knitr::opts_chunk$set(echo = FALSE)
@@ -151,7 +152,10 @@ wcmatches <- wcmatches %>%
   mutate(Total_Gols = home_score + away_score) %>% 
   select(year, home_team, away_team, home_score, away_score, Total_Gols, everything())
 
-wcmatches %>% knitr::kable()
+wcmatches %>% 
+  select(year, home_team, away_team, home_score, away_score, Total_Gols) %>% 
+  head(15) %>% 
+  knitr::kable()
 
 ```
 
@@ -159,8 +163,9 @@ wcmatches %>% knitr::kable()
 
 ```{r}
 wcmatches %>% 
+  select(year, home_team, away_team, Total_Gols) %>% 
   arrange(-Total_Gols) %>% 
-    head(10) %>% knitr::kable() 
+    head(20) %>% knitr::kable() 
 
 ```
 
@@ -194,7 +199,8 @@ wcmatches %>%
 inner_join(set1, set2, join_by("home_team" == "away_team")) %>% 
   mutate(total_goals = home_score + away_score) %>%
   select(team = home_team, total_goals) %>%
-  arrange(-total_goals) %>% knitr::kable()
+  arrange(-total_goals) %>% 
+  head(10) %>% knitr::kable()
 
 ```
 
