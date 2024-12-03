@@ -4,10 +4,9 @@ author: "Leroy Ozores"
 output:
   slidy_presentation:
     highlight: default
+  powerpoint_presentation: default
   beamer_presentation:
     highlight: default
-  powerpoint_presentation: default
-  pdf_document: default
 ---
 ```{r setup, include=FALSE, message = F}
 knitr::opts_chunk$set(echo = FALSE)
