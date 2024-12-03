@@ -33,7 +33,7 @@ FIFA!
 The data that I will be using comes from FIFA, "Fédération Internationale de Football Association", which translates to,  *International Federation of Association Football*. This dataset collects data from `r nrow(wcmatches)` World Cup matches that was played in its history from Uruguay in 1930 to Russia in 2018. 
 This data collected from [GitHub](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-11-29).
 
-What's in the data? Fun Facts? Can the next FIFA World Cup winner be predicted? 
+What's in the data? Can the next FIFA World Cup winner be predicted? 
 
 
 # Which Countries have hosted the FIFA World Cup?
@@ -41,7 +41,7 @@ What's in the data? Fun Facts? Can the next FIFA World Cup winner be predicted?
 worldcups %>% 
   distinct(host) %>% 
   kbl() %>% 
-  kable_minimal()
+  kable_paper()
 
 ```
 
@@ -59,7 +59,9 @@ wcmatches %>%
 ```{r}
 wcmatches %>% 
   select(stage, date, home_team, away_team,home_score, away_score, outcome) %>% 
-  filter(date == max(date)) %>% knitr::kable()
+  filter(date == max(date)) %>% 
+  kbl() %>% 
+  kable_minimal()
 ```
 
 # Attendance Rate
@@ -70,7 +72,8 @@ How popular is the FIFA World Cup? How many attended? Which year had the highest
 top3 <- worldcups %>% 
   select(year, host, attendance, games, winner) %>% 
   slice_max(n = 3, order_by = attendance)
-knitr::kable(top3)
+  kbl(top3) %>% 
+  kable_minimal()
 
 ```
 
@@ -104,7 +107,8 @@ ggplotly(q)
 
 ```{r}
 filter(worldcups, winner == "USA" | second == "USA" | third == "USA" | fourth == "USA") %>% 
-  knitr::kable()
+  kbl() %>% 
+  kable_minimal()
 
 ```
 
@@ -114,7 +118,7 @@ filter(worldcups, winner == "USA" | second == "USA" | third == "USA" | fourth ==
 worldcups %>% 
   distinct(winner, year) %>%
   kbl() %>% 
-  kable_classic()
+  kable_classic(html_font = "Cambria")
 
 ```
 
@@ -123,7 +127,7 @@ worldcups %>%
 worldcups %>%
   distinct(second) %>%
   kbl() %>% 
-  kable_classic()
+  kable_classic(html_font = "Cambria")
 
 ```
 
@@ -155,7 +159,9 @@ wcmatches <- wcmatches %>%
 wcmatches %>% 
   select(year, home_team, away_team, home_score, away_score, Total_Gols) %>% 
   head(15) %>% 
-  knitr::kable()
+  kbl() %>% 
+  kable_minimal()
+
 
 ```
 
@@ -165,7 +171,10 @@ wcmatches %>%
 wcmatches %>% 
   select(year, home_team, away_team, Total_Gols) %>% 
   arrange(-Total_Gols) %>% 
-    head(20) %>% knitr::kable() 
+  head(20) %>% 
+  kbl() %>% 
+  kable_minimal()
+
 
 ```
 
@@ -200,7 +209,9 @@ inner_join(set1, set2, join_by("home_team" == "away_team")) %>%
   mutate(total_goals = home_score + away_score) %>%
   select(team = home_team, total_goals) %>%
   arrange(-total_goals) %>% 
-  head(10) %>% knitr::kable()
+  head(10) %>% 
+  kbl() %>% 
+  kable_classic(html_font = "Cambria")
 
 ```
 
@@ -210,7 +221,8 @@ inner_join(set1, set2, join_by("home_team" == "away_team")) %>%
 wcmatches %>%
   na.omit() %>% 
   select(year, home_team, away_team, win_conditions) %>% 
-  knitr::kable()
+  kbl() %>% 
+  kable_classic(html_font = "Cambria")
 ```
 
 
@@ -219,7 +231,10 @@ wcmatches %>%
 AET <- wcmatches %>% 
   filter(grepl("AET", win_conditions)) %>% 
   select(year, stage, win_conditions) %>% 
-  arrange(year) %>% knitr::kable()
+  arrange(year) %>% 
+  kbl() %>% 
+  kable_classic(html_font = "Cambria")
+
 AET
 ```
 
@@ -229,7 +244,9 @@ penalties <- wcmatches %>%
   filter(grepl("penalties", win_conditions)) %>% 
   select(year, stage, win_conditions) %>% 
   arrange(year)
-penalties %>% knitr::kable()
+penalties %>%
+  kbl() %>% 
+  kable_classic(html_font = "Cambria")
 
 ```
 
